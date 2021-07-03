@@ -28,5 +28,6 @@ public class Main
         Generator generator=new Generator();
         generator.generate(projectPath,basePackage,entityPackage,entityClasses);
         System.out.println("Generated!");
+        scanner.close();
     }
 }
