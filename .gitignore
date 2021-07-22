@@ -4,6 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 out
+*.class
 
 ### STS ###
 .apt_generated
