@@ -8,26 +8,26 @@ public class Main
     public static void main(String[] args) throws IOException
     {
         Scanner scanner=new Scanner(System.in);
-        System.out.println("Enter Project Path:");
+        System.out.print("Enter Project Path: ");
         String projectPath=scanner.nextLine();
-        System.out.println("Base Package Name:");
+        System.out.print("Base Package Name: ");
         String basePackage=scanner.nextLine();
-        System.out.println("Entity Package Name:");
+        System.out.print("Entity Package Name: ");
         String entityPackage=scanner.nextLine();
-        System.out.println("How many Entity Classes?");
+        System.out.print("How many Entity Classes? ");
         int entityClassQuantity=Integer.parseInt(scanner.nextLine());
-        System.out.println("Enter Id Type for All Entity Classes:");
+        System.out.print("Enter Id Type for All Entity Classes: ");
         String idType=scanner.nextLine();
         Entity[] entityClasses=new Entity[entityClassQuantity];
         for(int i=0;i<entityClasses.length;i++)
         {
-            System.out.print("Enter Entity Class Name:");
+            System.out.print("Enter "+(i+1)+". Entity Class Name: ");
             String name=scanner.nextLine();
             entityClasses[i]=new Entity(name,idType);
         }
         Generator generator=new Generator();
         generator.generate(projectPath,basePackage,entityPackage,entityClasses);
-        System.out.println("Generated!");
+        System.out.print("Generated!");
         scanner.close();
     }
 }
