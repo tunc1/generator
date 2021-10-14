@@ -1,4 +1,7 @@
-package app;
+package app.generator;
+
+import app.util.GetEntityClasses;
+import app.util.WriteToFile;
 
 import java.io.File;
 import java.io.IOException;

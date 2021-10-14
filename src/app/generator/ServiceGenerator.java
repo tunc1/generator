@@ -1,4 +1,4 @@
-package app;
+package app.generator;
 
 public class ServiceGenerator extends ClassGenerator
 {
