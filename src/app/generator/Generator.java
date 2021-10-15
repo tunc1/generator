@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Generator
 {
-    private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator;
+    private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator;
     private final GetEntityClasses getEntityClasses;
     private final WriteToFile writeToFile;
     public Generator()
@@ -18,29 +18,39 @@ public class Generator
         serviceGenerator=new ServiceGenerator();
         controllerGenerator=new ControllerGenerator();
         getEntityClasses=new GetEntityClasses();
+        controllerTestGenerator=new ControllerTestGenerator();
         writeToFile=new WriteToFile();
     }
     public void generate(String projectPath,String basePackage,String entityPackage,String idType) throws IOException
     {
-        projectPath+="\\src\\main\\java\\"+basePackage.replace(".","\\");
-        File repositoryFolder=new File(projectPath+"\\repository");
+        String javaPath=projectPath+"\\src\\main\\java\\"+basePackage.replace(".","\\");
+        String testPath=projectPath+"\\src\\test\\java\\"+basePackage.replace(".","\\");
+        File repositoryFolder=new File(javaPath+"\\repository");
         if(!repositoryFolder.exists())
             repositoryFolder.mkdir();
-        File serviceFolder=new File(projectPath+"\\service");
+        File serviceFolder=new File(javaPath+"\\service");
         if(!serviceFolder.exists())
             serviceFolder.mkdir();
-        File controllerFolder=new File(projectPath+"\\controller");
+        File controllerFolder=new File(javaPath+"\\controller");
         if(!controllerFolder.exists())
             controllerFolder.mkdir();
-        List<String> entities=getEntityClasses.get(projectPath,entityPackage);
+        File controllerTestFolder=new File(testPath+"\\controller");
+        if(!controllerTestFolder.exists())
+        {
+            controllerTestFolder.getParentFile().mkdirs();
+            controllerTestFolder.mkdir();
+        }
+        List<String> entities=getEntityClasses.get(javaPath,entityPackage);
         for(String entity:entities)
         {
             String repository=repositoryGenerator.generate(entity,idType,basePackage,entityPackage);
-            writeToFile.write(projectPath+"\\repository\\"+entity+"Repository.java",repository);
+            writeToFile.write(javaPath+"\\repository\\"+entity+"Repository.java",repository);
             String service=serviceGenerator.generate(entity,idType,basePackage,entityPackage);
-            writeToFile.write(projectPath+"\\service\\"+entity+"Service.java",service);
+            writeToFile.write(javaPath+"\\service\\"+entity+"Service.java",service);
             String controller=controllerGenerator.generate(entity,idType,basePackage,entityPackage);
-            writeToFile.write(projectPath+"\\controller\\"+entity+"Controller.java",controller);
+            writeToFile.write(javaPath+"\\controller\\"+entity+"Controller.java",controller);
+            String controllerTest=controllerTestGenerator.generate(entity,idType,basePackage,entityPackage);
+            writeToFile.write(testPath+"\\controller\\"+entity+"ControllerTest.java",controllerTest);
         }
     }
 }
