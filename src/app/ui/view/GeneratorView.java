@@ -9,7 +9,6 @@ public class GeneratorView
 {
     private JFrame frame;
     private JTextField projectPathTextField,basePackageTextField,entityPackageTextField;
-    private JLabel projectPathLabel,basePackageLabel,entityPackageLabel,idTypeLabel;
     private JButton generateButton;
     private JComboBox<String> idTypeComboBox;
     public GeneratorView()
@@ -23,7 +22,7 @@ public class GeneratorView
         frame.setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        projectPathLabel=new JLabel("Project Path:");
+        JLabel projectPathLabel=new JLabel("Project Path:");
         projectPathLabel.setBounds(10,10,400,25);
         frame.add(projectPathLabel);
 
@@ -31,7 +30,7 @@ public class GeneratorView
         projectPathTextField.setBounds(10,40,400,25);
         frame.add(projectPathTextField);
 
-        basePackageLabel=new JLabel("Base Package Name:");
+        JLabel basePackageLabel=new JLabel("Base Package Name:");
         basePackageLabel.setBounds(10,70,400,25);
         frame.add(basePackageLabel);
 
@@ -39,7 +38,7 @@ public class GeneratorView
         basePackageTextField.setBounds(10,100,400,25);
         frame.add(basePackageTextField);
 
-        entityPackageLabel=new JLabel("Entity Package Name:");
+        JLabel entityPackageLabel=new JLabel("Entity Package Name:");
         entityPackageLabel.setBounds(10,130,400,25);
         frame.add(entityPackageLabel);
 
@@ -47,7 +46,7 @@ public class GeneratorView
         entityPackageTextField.setBounds(10,160,400,25);
         frame.add(entityPackageTextField);
 
-        idTypeLabel=new JLabel("Id Type for All Entity Classes:");
+        JLabel idTypeLabel=new JLabel("Id Type for All Entity Classes:");
         idTypeLabel.setBounds(10,190,400,25);
         frame.add(idTypeLabel);
 
