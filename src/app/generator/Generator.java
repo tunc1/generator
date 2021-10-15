@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Generator
 {
-    private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator;
+    private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator,serviceTestGenerator;
     private final GetEntityClasses getEntityClasses;
     private final WriteToFile writeToFile;
     public Generator()
@@ -19,6 +19,7 @@ public class Generator
         controllerGenerator=new ControllerGenerator();
         getEntityClasses=new GetEntityClasses();
         controllerTestGenerator=new ControllerTestGenerator();
+        serviceTestGenerator=new ServiceTestGenerator();
         writeToFile=new WriteToFile();
     }
     public void generate(String projectPath,String basePackage,String entityPackage,String idType) throws IOException
@@ -40,6 +41,9 @@ public class Generator
             controllerTestFolder.getParentFile().mkdirs();
             controllerTestFolder.mkdir();
         }
+        File serviceTestFolder=new File(testPath+"\\service");
+        if(!serviceTestFolder.exists())
+            serviceTestFolder.mkdir();
         List<String> entities=getEntityClasses.get(javaPath,entityPackage);
         for(String entity:entities)
         {
@@ -51,6 +55,8 @@ public class Generator
             writeToFile.write(javaPath+"\\controller\\"+entity+"Controller.java",controller);
             String controllerTest=controllerTestGenerator.generate(entity,idType,basePackage,entityPackage);
             writeToFile.write(testPath+"\\controller\\"+entity+"ControllerTest.java",controllerTest);
+            String serviceTest=serviceTestGenerator.generate(entity,idType,basePackage,entityPackage);
+            writeToFile.write(testPath+"\\service\\"+entity+"ServiceTest.java",serviceTest);
         }
     }
 }
