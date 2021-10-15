@@ -1,5 +1,7 @@
 package app.ui.view;
 
+import app.consts.Consts;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
@@ -10,10 +12,8 @@ public class GeneratorView
     private JLabel projectPathLabel,basePackageLabel,entityPackageLabel,idTypeLabel;
     private JButton generateButton;
     private JComboBox<String> idTypeComboBox;
-    private final String[] idTypes;
     public GeneratorView()
     {
-        idTypes=new String[]{"Long","Integer","String","Double"};
         createUI();
     }
     private void createUI()
@@ -51,7 +51,7 @@ public class GeneratorView
         idTypeLabel.setBounds(10,190,400,25);
         frame.add(idTypeLabel);
 
-        idTypeComboBox=new JComboBox<>(idTypes);
+        idTypeComboBox=new JComboBox<>(Consts.idTypes);
         idTypeComboBox.setBounds(10,220,400,25);
         frame.add(idTypeComboBox);
 
