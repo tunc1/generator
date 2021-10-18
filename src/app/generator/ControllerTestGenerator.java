@@ -15,6 +15,9 @@ public class ControllerTestGenerator extends ClassGenerator
                 "import org.junit.jupiter.api.Assertions;\n"+
                 "import org.junit.jupiter.api.BeforeEach;\n"+
                 "import org.junit.jupiter.api.Test;\n"+
+                "import org.springframework.data.domain.Page;\n"+
+                "import org.springframework.data.domain.PageImpl;\n"+
+                "import org.springframework.data.domain.PageRequest;\n"+
                 "import org.junit.jupiter.api.extension.ExtendWith;\n"+
                 "import org.mockito.Mock;\n"+
                 "import org.mockito.Mockito;\n"+
@@ -69,10 +72,10 @@ public class ControllerTestGenerator extends ClassGenerator
                 "    @Test\n"+
                 "    void findAll()\n"+
                 "    {\n"+
-                "        List<"+entity+"> "+entityNameLowerCase+"s=List.of(new "+entity+"());\n"+
-                "        Mockito.when("+entityNameLowerCase+"Service.findAll()).thenReturn("+entityNameLowerCase+"s);\n"+
-                "        List<"+entity+"> actual="+entityNameLowerCase+"Controller.findAll();\n"+
-                "        Assertions.assertEquals(actual,"+entityNameLowerCase+"s);\n"+
+                "        Page<"+entity+"> page=new PageImpl<>(List.of(new "+entity+"()));\n"+
+                "        Mockito.when("+entityNameLowerCase+"Service.findAll(Mockito.any())).thenReturn(page);\n"+
+                "        Page<"+entity+"> actual="+entityNameLowerCase+"Controller.findAll(PageRequest.of(0,20));\n"+
+                "        Assertions.assertEquals(actual,page);\n"+
                 "    }\n"+
                 "}";
     }

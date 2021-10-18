@@ -19,6 +19,10 @@ public class ServiceTestGenerator extends ClassGenerator
                 "import org.mockito.Mock;\n"+
                 "import org.mockito.Mockito;\n"+
                 "import org.mockito.junit.jupiter.MockitoExtension;\n"+
+                "import org.springframework.data.domain.Page;\n"+
+                "import org.springframework.data.domain.PageImpl;\n"+
+                "import org.springframework.data.domain.PageRequest;\n"+
+                "import org.springframework.data.domain.Pageable;\n"+
                 "\n"+
                 "import javax.persistence.EntityNotFoundException;\n"+
                 "import java.util.List;\n"+
@@ -75,10 +79,10 @@ public class ServiceTestGenerator extends ClassGenerator
                 "    @Test\n"+
                 "    void findAll()\n"+
                 "    {\n"+
-                "        List<"+entity+"> "+entityNameLowerCase+"s=List.of(new "+entity+"());\n"+
-                "        Mockito.when("+entityNameLowerCase+"Repository.findAll()).thenReturn("+entityNameLowerCase+"s);\n"+
-                "        List<"+entity+"> actual="+entityNameLowerCase+"Service.findAll();\n"+
-                "        Assertions.assertEquals(actual,"+entityNameLowerCase+"s);\n"+
+                "        Page<"+entity+"> page=new PageImpl<>(List.of(new "+entity+"()));\n"+
+                "        Mockito.when("+entityNameLowerCase+"Repository.findAll(Mockito.any(Pageable.class))).thenReturn(page);\n"+
+                "        Page<"+entity+"> actual="+entityNameLowerCase+"Service.findAll(PageRequest.of(0,20));\n"+
+                "        Assertions.assertEquals(actual,page);\n"+
                 "    }\n"+
                 "}";
     }
