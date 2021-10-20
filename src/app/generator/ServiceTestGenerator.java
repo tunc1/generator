@@ -10,7 +10,7 @@ public class ServiceTestGenerator extends ClassGenerator
         String defaultId=DefaultIdValue.get(idType);
         return "package "+basePackage+".service;\n"+
                 "\n"+
-                "import "+basePackage+".entity."+entity+";\n"+
+                "import "+basePackage+"."+entityPackage+"."+entity+";\n"+
                 "import "+basePackage+".repository."+entity+"Repository;\n"+
                 "import org.junit.jupiter.api.Assertions;\n"+
                 "import org.junit.jupiter.api.BeforeEach;\n"+
