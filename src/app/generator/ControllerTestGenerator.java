@@ -1,13 +1,14 @@
 package app.generator;
 
-import app.util.DefaultIdValue;
+import app.dto.EntityClass;
 
 public class ControllerTestGenerator extends ClassGenerator
 {
-    public String generate(String entity,String idType,String basePackage,String entityPackage)
+    public String generate(EntityClass entityClass,String basePackage,String entityPackage)
     {
+        String entity=entityClass.getClassName();
         String entityNameLowerCase=Character.toLowerCase(entity.charAt(0))+entity.substring(1);
-        String defaultId=DefaultIdValue.get(idType);
+        String defaultId=entityClass.getIdType()+".valueOf(\"1\")";
         return "package "+basePackage+".controller;\n"+
                 "\n"+
                 "import "+basePackage+"."+entityPackage+"."+entity+";\n"+
@@ -48,7 +49,7 @@ public class ControllerTestGenerator extends ClassGenerator
                 "    @Test\n"+
                 "    void update()\n"+
                 "    {\n"+
-                "        "+idType+" id="+defaultId+";\n"+
+                "        "+entityClass.getIdType()+" id="+defaultId+";\n"+
                 "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
                 "        Mockito.when("+entityNameLowerCase+"Service.update(Mockito.any())).thenAnswer(e->e.getArgument(0,"+entity+".class));\n"+
                 "        "+entity+" updated="+entityNameLowerCase+"Controller.update("+entityNameLowerCase+",id);\n"+

@@ -24,10 +24,9 @@ public class GeneratorPresenter
         String projectPath=view.getProjectPath();
         String basePackage=view.getBasePackage();
         String entityPackage=view.getEntityPackage();
-        String idType=view.getIdType();
         try
         {
-            generator.generate(projectPath,basePackage,entityPackage,idType);
+            generator.generate(projectPath,basePackage,entityPackage);
             view.showMessage("Generated!");
         }
         catch(IOException e)

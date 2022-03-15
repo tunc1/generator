@@ -1,7 +1,5 @@
 package app.ui.view;
 
-import app.consts.Consts;
-
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
@@ -10,7 +8,6 @@ public class GeneratorView
     private JFrame frame;
     private JTextField projectPathTextField,basePackageTextField,entityPackageTextField;
     private JButton generateButton;
-    private JComboBox<String> idTypeComboBox;
     public GeneratorView()
     {
         createUI();
@@ -46,16 +43,8 @@ public class GeneratorView
         entityPackageTextField.setBounds(10,160,400,25);
         frame.add(entityPackageTextField);
 
-        JLabel idTypeLabel=new JLabel("Id Type for All Entity Classes:");
-        idTypeLabel.setBounds(10,190,400,25);
-        frame.add(idTypeLabel);
-
-        idTypeComboBox=new JComboBox<>(Consts.idTypes);
-        idTypeComboBox.setBounds(10,220,400,25);
-        frame.add(idTypeComboBox);
-
         generateButton=new JButton("Generate");
-        generateButton.setBounds(10,250,400,25);
+        generateButton.setBounds(10,190,400,25);
         frame.add(generateButton);
     }
     public String getProjectPath()
@@ -69,10 +58,6 @@ public class GeneratorView
     public String getEntityPackage()
     {
         return entityPackageTextField.getText();
-    }
-    public String getIdType()
-    {
-        return idTypeComboBox.getSelectedItem().toString();
     }
     public void setOnClick(ActionListener listener)
     {

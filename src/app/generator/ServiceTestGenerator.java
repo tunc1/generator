@@ -1,13 +1,14 @@
 package app.generator;
 
-import app.util.DefaultIdValue;
+import app.dto.EntityClass;
 
 public class ServiceTestGenerator extends ClassGenerator
 {
-    public String generate(String entity,String idType,String basePackage,String entityPackage)
+    public String generate(EntityClass entityClass,String basePackage,String entityPackage)
     {
+        String entity=entityClass.getClassName();
         String entityNameLowerCase=Character.toLowerCase(entity.charAt(0))+entity.substring(1);
-        String defaultId=DefaultIdValue.get(idType);
+        String defaultId=entityClass.getIdType()+".valueOf(\"1\")";
         return "package "+basePackage+".service;\n"+
                 "\n"+
                 "import "+basePackage+"."+entityPackage+"."+entity+";\n"+
