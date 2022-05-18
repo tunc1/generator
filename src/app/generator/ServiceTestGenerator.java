@@ -47,7 +47,7 @@ public class ServiceTestGenerator extends ClassGenerator
                 "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
                 "        Mockito.when("+entityNameLowerCase+"Repository.save(Mockito.any())).thenAnswer(e->e.getArgument(0,"+entity+".class));\n"+
                 "        "+entity+" saved="+entityNameLowerCase+"Service.save("+entityNameLowerCase+");\n"+
-                "        Assertions.assertEquals(saved,"+entityNameLowerCase+");\n"+
+                "        Assertions.assertEquals("+entityNameLowerCase+",saved);\n"+
                 "    }\n"+
                 "    @Test\n"+
                 "    void update()\n"+
@@ -55,7 +55,7 @@ public class ServiceTestGenerator extends ClassGenerator
                 "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
                 "        Mockito.when("+entityNameLowerCase+"Repository.save(Mockito.any())).thenAnswer(e->e.getArgument(0,"+entity+".class));\n"+
                 "        "+entity+" updated="+entityNameLowerCase+"Service.update("+entityNameLowerCase+");\n"+
-                "        Assertions.assertEquals(updated,"+entityNameLowerCase+");\n"+
+                "        Assertions.assertEquals("+entityNameLowerCase+",updated);\n"+
                 "    }\n"+
                 "    @Test\n"+
                 "    void deleteById()\n"+
@@ -69,7 +69,7 @@ public class ServiceTestGenerator extends ClassGenerator
                 "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
                 "        Mockito.when("+entityNameLowerCase+"Repository.findById(Mockito.any())).thenReturn(Optional.of("+entityNameLowerCase+"));\n"+
                 "        "+entity+" actual="+entityNameLowerCase+"Service.findById("+defaultId+");\n"+
-                "        Assertions.assertEquals(actual,"+entityNameLowerCase+");\n"+
+                "        Assertions.assertEquals("+entityNameLowerCase+",actual);\n"+
                 "    }\n"+
                 "    @Test\n"+
                 "    void findById_throwsEntityNotFoundException()\n"+
@@ -83,7 +83,7 @@ public class ServiceTestGenerator extends ClassGenerator
                 "        Page<"+entity+"> page=new PageImpl<>(List.of(new "+entity+"()));\n"+
                 "        Mockito.when("+entityNameLowerCase+"Repository.findAll(Mockito.any(Pageable.class))).thenReturn(page);\n"+
                 "        Page<"+entity+"> actual="+entityNameLowerCase+"Service.findAll(PageRequest.of(0,20));\n"+
-                "        Assertions.assertEquals(actual,page);\n"+
+                "        Assertions.assertEquals(page,actual);\n"+
                 "    }\n"+
                 "}";
     }

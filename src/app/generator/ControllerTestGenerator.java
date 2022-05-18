@@ -44,7 +44,7 @@ public class ControllerTestGenerator extends ClassGenerator
                 "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
                 "        Mockito.when("+entityNameLowerCase+"Service.save(Mockito.any())).thenAnswer(e->e.getArgument(0,"+entity+".class));\n"+
                 "        "+entity+" saved="+entityNameLowerCase+"Controller.save("+entityNameLowerCase+");\n"+
-                "        Assertions.assertEquals(saved,"+entityNameLowerCase+");\n"+
+                "        Assertions.assertEquals("+entityNameLowerCase+",saved);\n"+
                 "    }\n"+
                 "    @Test\n"+
                 "    void update()\n"+
@@ -53,8 +53,8 @@ public class ControllerTestGenerator extends ClassGenerator
                 "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
                 "        Mockito.when("+entityNameLowerCase+"Service.update(Mockito.any())).thenAnswer(e->e.getArgument(0,"+entity+".class));\n"+
                 "        "+entity+" updated="+entityNameLowerCase+"Controller.update("+entityNameLowerCase+",id);\n"+
-                "        Assertions.assertEquals(updated,"+entityNameLowerCase+");\n"+
-                "        Assertions.assertEquals(updated.getId(),id);\n"+
+                "        Assertions.assertEquals("+entityNameLowerCase+",updated);\n"+
+                "        Assertions.assertEquals(id,updated.getId());\n"+
                 "    }\n"+
                 "    @Test\n"+
                 "    void deleteById()\n"+
@@ -68,7 +68,7 @@ public class ControllerTestGenerator extends ClassGenerator
                 "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
                 "        Mockito.when("+entityNameLowerCase+"Service.findById(Mockito.any())).thenReturn("+entityNameLowerCase+");\n"+
                 "        "+entity+" actual="+entityNameLowerCase+"Controller.findById("+defaultId+");\n"+
-                "        Assertions.assertEquals(actual,"+entityNameLowerCase+");\n"+
+                "        Assertions.assertEquals("+entityNameLowerCase+",actual);\n"+
                 "    }\n"+
                 "    @Test\n"+
                 "    void findAll()\n"+
@@ -76,7 +76,7 @@ public class ControllerTestGenerator extends ClassGenerator
                 "        Page<"+entity+"> page=new PageImpl<>(List.of(new "+entity+"()));\n"+
                 "        Mockito.when("+entityNameLowerCase+"Service.findAll(Mockito.any())).thenReturn(page);\n"+
                 "        Page<"+entity+"> actual="+entityNameLowerCase+"Controller.findAll(PageRequest.of(0,20));\n"+
-                "        Assertions.assertEquals(actual,page);\n"+
+                "        Assertions.assertEquals(page,actual);\n"+
                 "    }\n"+
                 "}";
     }
