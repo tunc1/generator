@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class GeneratorView
 {
     private JFrame frame;
-    private JTextField projectPathTextField,basePackageTextField,entityPackageTextField;
+    private JTextField projectPathTextField,basePackageTextField,entityPackageTextField,entityNamesTextField;
     private JButton generateButton;
     public GeneratorView()
     {
@@ -43,8 +43,16 @@ public class GeneratorView
         entityPackageTextField.setBounds(10,160,400,25);
         frame.add(entityPackageTextField);
 
+        JLabel entityLabel=new JLabel("Entity Names:");
+        entityLabel.setBounds(10,190,400,25);
+        frame.add(entityLabel);
+
+        entityNamesTextField=new JTextField("Book,Author");
+        entityNamesTextField.setBounds(10,220,400,25);
+        frame.add(entityNamesTextField);
+
         generateButton=new JButton("Generate");
-        generateButton.setBounds(10,190,400,25);
+        generateButton.setBounds(10,250,400,25);
         frame.add(generateButton);
     }
     public String getProjectPath()
@@ -58,6 +66,10 @@ public class GeneratorView
     public String getEntityPackage()
     {
         return entityPackageTextField.getText();
+    }
+    public String getEntityNames()
+    {
+        return entityNamesTextField.getText();
     }
     public void setOnClick(ActionListener listener)
     {

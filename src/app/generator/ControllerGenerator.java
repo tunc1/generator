@@ -6,7 +6,7 @@ public class ControllerGenerator extends ClassGenerator
 {
     public String generate(EntityClass entityClass,String basePackage,String entityPackage)
     {
-        String entity=entityClass.getClassName();
+        String entity=entityClass.className();
         String entityNameLowerCase=Character.toLowerCase(entity.charAt(0))+entity.substring(1);
         return "package "+basePackage+".controller;\n"
                 +"\n"
@@ -33,13 +33,13 @@ public class ControllerGenerator extends ClassGenerator
                 +"\t\treturn "+entityNameLowerCase+"Service.save("+entityNameLowerCase+");\n"
                 +"\t}\n"
                 +"\t@PutMapping(\"/{id}\")\n"
-                +"\tpublic "+entity+" update(@RequestBody "+entity+" "+entityNameLowerCase+",@PathVariable "+entityClass.getIdType()+" id)\n"
+                +"\tpublic "+entity+" update(@RequestBody "+entity+" "+entityNameLowerCase+",@PathVariable "+entityClass.idType()+" id)\n"
                 +"\t{\n"
                 +"\t\t"+entityNameLowerCase+".setId(id);\n"
                 +"\t\treturn "+entityNameLowerCase+"Service.update("+entityNameLowerCase+");\n"
                 +"\t}\n"
                 +"\t@GetMapping(\"/{id}\")\n"
-                +"\tpublic "+entity+" findById(@PathVariable "+entityClass.getIdType()+" id)\n"
+                +"\tpublic "+entity+" findById(@PathVariable "+entityClass.idType()+" id)\n"
                 +"\t{\n"
                 +"\t\treturn "+entityNameLowerCase+"Service.findById(id);\n"
                 +"\t}\n"
@@ -50,7 +50,7 @@ public class ControllerGenerator extends ClassGenerator
                 +"\t}\n"
                 +"\t@DeleteMapping(\"/{id}\")\n"
                 +"\t@ResponseStatus(code=HttpStatus.NO_CONTENT)\n"
-                +"\tpublic void deleteById(@PathVariable "+entityClass.getIdType()+" id)\n"
+                +"\tpublic void deleteById(@PathVariable "+entityClass.idType()+" id)\n"
                 +"\t{\n"
                 +"\t\t"+entityNameLowerCase+"Service.deleteById(id);\n"
                 +"\t}\n"

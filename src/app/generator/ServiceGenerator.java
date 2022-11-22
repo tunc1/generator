@@ -6,7 +6,7 @@ public class ServiceGenerator extends ClassGenerator
 {
     public String generate(EntityClass entityClass,String basePackage,String entityPackage)
     {
-        String entity=entityClass.getClassName();
+        String entity=entityClass.className();
         String entityNameLowerCase=Character.toLowerCase(entity.charAt(0))+entity.substring(1);
         return "package "+basePackage+".service;\n"
                 +"\n"+"import org.springframework.data.domain.Pageable;\n"
@@ -32,11 +32,11 @@ public class ServiceGenerator extends ClassGenerator
                 +"\t{\n"
                 +"\t\treturn "+entityNameLowerCase+"Repository.save("+entityNameLowerCase+");\n"
                 +"\t}\n"
-                +"\tpublic void deleteById("+entityClass.getIdType()+" id)\n"
+                +"\tpublic void deleteById("+entityClass.idType()+" id)\n"
                 +"\t{\n"
                 +"\t\t"+entityNameLowerCase+"Repository.deleteById(id);\n"
                 +"\t}\n"
-                +"\tpublic "+entity+" findById("+entityClass.getIdType()+" id)\n"
+                +"\tpublic "+entity+" findById("+entityClass.idType()+" id)\n"
                 +"\t{\n"
                 +"\t\treturn "+entityNameLowerCase+"Repository.findById(id).orElseThrow(EntityNotFoundException::new);\n"
                 +"\t}\n"

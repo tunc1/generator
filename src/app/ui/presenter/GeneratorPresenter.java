@@ -4,6 +4,8 @@ import app.generator.Generator;
 import app.ui.view.GeneratorView;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class GeneratorPresenter
 {
@@ -24,9 +26,10 @@ public class GeneratorPresenter
         String projectPath=view.getProjectPath();
         String basePackage=view.getBasePackage();
         String entityPackage=view.getEntityPackage();
+        List<String> entityNames=Arrays.stream(view.getEntityNames().split(",")).toList();
         try
         {
-            generator.generate(projectPath,basePackage,entityPackage);
+            generator.generate(projectPath,basePackage,entityPackage,entityNames);
             view.showMessage("Generated!");
         }
         catch(IOException e)

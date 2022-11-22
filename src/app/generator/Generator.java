@@ -1,29 +1,28 @@
 package app.generator;
 
 import app.dto.EntityClass;
-import app.util.GetEntityClasses;
 import app.util.WriteToFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Generator
 {
-    private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator,serviceTestGenerator;
-    private final GetEntityClasses getEntityClasses;
+    private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator,serviceTestGenerator,entityGenerator;
     private final WriteToFile writeToFile;
     public Generator()
     {
+        entityGenerator=new EntityGenerator();
         repositoryGenerator=new RepositoryGenerator();
         serviceGenerator=new ServiceGenerator();
         controllerGenerator=new ControllerGenerator();
-        getEntityClasses=new GetEntityClasses();
         controllerTestGenerator=new ControllerTestGenerator();
         serviceTestGenerator=new ServiceTestGenerator();
         writeToFile=new WriteToFile();
     }
-    public void generate(String projectPath,String basePackage,String entityPackage) throws IOException
+    public void generate(String projectPath,String basePackage,String entityPackage,List<String> entityNames) throws IOException
     {
         String javaPath=projectPath+"\\src\\main\\java\\"+basePackage.replace(".","\\");
         String testPath=projectPath+"\\src\\test\\java\\"+basePackage.replace(".","\\");
@@ -45,19 +44,26 @@ public class Generator
         File serviceTestFolder=new File(testPath+"\\service");
         if(!serviceTestFolder.exists())
             serviceTestFolder.mkdir();
-        List<EntityClass> entities=getEntityClasses.get(javaPath,entityPackage);
+        String entityPath=entityPackage.replace(".","\\");
+        File entityFolder=new File(javaPath+"\\"+entityPath);
+        if(!entityFolder.exists())
+            entityFolder.mkdir();
+        List<EntityClass> entities=new LinkedList<>();
+        entityNames.stream().forEach(entityName -> entities.add(new EntityClass(entityName,"Long")));
         for(EntityClass entity:entities)
         {
+            String entityData=entityGenerator.generate(entity,basePackage,entityPackage);
+            writeToFile.write(javaPath+"\\"+entityPath+"\\"+entity.className()+".java",entityData);
             String repository=repositoryGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\repository\\"+entity.getClassName()+"Repository.java",repository);
+            writeToFile.write(javaPath+"\\repository\\"+entity.className()+"Repository.java",repository);
             String service=serviceGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\service\\"+entity.getClassName()+"Service.java",service);
+            writeToFile.write(javaPath+"\\service\\"+entity.className()+"Service.java",service);
             String controller=controllerGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\controller\\"+entity.getClassName()+"Controller.java",controller);
+            writeToFile.write(javaPath+"\\controller\\"+entity.className()+"Controller.java",controller);
             String controllerTest=controllerTestGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(testPath+"\\controller\\"+entity.getClassName()+"ControllerTest.java",controllerTest);
+            writeToFile.write(testPath+"\\controller\\"+entity.className()+"ControllerTest.java",controllerTest);
             String serviceTest=serviceTestGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(testPath+"\\service\\"+entity.getClassName()+"ServiceTest.java",serviceTest);
+            writeToFile.write(testPath+"\\service\\"+entity.className()+"ServiceTest.java",serviceTest);
         }
     }
 }

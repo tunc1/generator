@@ -6,9 +6,9 @@ public class ServiceTestGenerator extends ClassGenerator
 {
     public String generate(EntityClass entityClass,String basePackage,String entityPackage)
     {
-        String entity=entityClass.getClassName();
+        String entity=entityClass.className();
         String entityNameLowerCase=Character.toLowerCase(entity.charAt(0))+entity.substring(1);
-        String defaultId=entityClass.getIdType()+".valueOf(\"1\")";
+        String defaultId=entityClass.idType()+".valueOf(\"1\")";
         return "package "+basePackage+".service;\n"+
                 "\n"+
                 "import "+basePackage+"."+entityPackage+"."+entity+";\n"+
