@@ -1,7 +1,6 @@
-package app.ui.presenter;
+package app.ui;
 
 import app.generator.Generator;
-import app.ui.view.GeneratorView;
 
 import java.io.IOException;
 import java.util.Arrays;

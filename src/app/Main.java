@@ -1,8 +1,8 @@
 package app;
 
 import app.generator.Generator;
-import app.ui.presenter.GeneratorPresenter;
-import app.ui.view.GeneratorView;
+import app.ui.GeneratorPresenter;
+import app.ui.GeneratorView;
 
 public class Main
 {

@@ -1,4 +1,4 @@
-package app.ui.view;
+package app.ui;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
