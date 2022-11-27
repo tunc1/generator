@@ -1,6 +1,6 @@
 package app.ui;
 
-import app.generator.Generator;
+import app.generator.GeneratorFacade;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -9,11 +9,11 @@ import java.util.List;
 public class GeneratorPresenter
 {
     private GeneratorView view;
-    private Generator generator;
-    public GeneratorPresenter(GeneratorView view,Generator generator)
+    private GeneratorFacade generatorFacade;
+    public GeneratorPresenter(GeneratorView view,GeneratorFacade generatorFacade)
     {
         this.view=view;
-        this.generator=generator;
+        this.generatorFacade=generatorFacade;
         view.setOnClick(e->generate());
     }
     public void start()
@@ -28,7 +28,7 @@ public class GeneratorPresenter
         List<String> entityNames=Arrays.stream(view.getEntityNames().split(",")).toList();
         try
         {
-            generator.generate(projectPath,basePackage,entityPackage,entityNames);
+            generatorFacade.generate(projectPath,basePackage,entityPackage,entityNames);
             view.showMessage("Generated!");
         }
         catch(IOException e)

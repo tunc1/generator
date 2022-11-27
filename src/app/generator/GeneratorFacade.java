@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Generator
+public class GeneratorFacade
 {
     private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator,serviceTestGenerator,entityGenerator;
     private final WriteToFile writeToFile;
-    public Generator()
+    public GeneratorFacade()
     {
         entityGenerator=new EntityGenerator();
         repositoryGenerator=new RepositoryGenerator();
