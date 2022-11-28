@@ -25,7 +25,7 @@ public class GeneratorPresenter
         String projectPath=view.getProjectPath();
         String basePackage=view.getBasePackage();
         String entityPackage=view.getEntityPackage();
-        List<String> entityNames=Arrays.stream(view.getEntityNames().split(",")).toList();
+        List<String> entityNames=List.of(view.getEntityNames().split(","));
         try
         {
             generatorFacade.generate(projectPath,basePackage,entityPackage,entityNames);
