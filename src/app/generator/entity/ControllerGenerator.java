@@ -18,7 +18,7 @@ public class ControllerGenerator extends ClassGenerator
                 +"\n"+"import org.springframework.http.HttpStatus;\n"
                 +"\n"
                 +"@RestController\n"
-                +"@RequestMapping(\"/"+entityNameLowerCase+"\")\n"
+                +"@RequestMapping(\"/api/"+entityNameLowerCase+"\")\n"
                 +"public class "+entity+"Controller\n"
                 +"{\n"
                 +"\tprivate "+entity+"Service "+entityNameLowerCase+"Service;\n"
