@@ -1,4 +1,4 @@
-package app.generator;
+package app.generator.entity;
 
 import app.dto.EntityClass;
 

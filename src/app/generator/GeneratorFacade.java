@@ -1,6 +1,7 @@
 package app.generator;
 
 import app.dto.EntityClass;
+import app.generator.entity.*;
 import app.util.WriteToFile;
 
 import java.io.File;
@@ -49,7 +50,7 @@ public class GeneratorFacade
         if(!entityFolder.exists())
             entityFolder.mkdir();
         List<EntityClass> entities=new LinkedList<>();
-        entityNames.stream().forEach(entityName -> entities.add(new EntityClass(entityName,"Long")));
+        entityNames.forEach(entityName -> entities.add(new EntityClass(entityName,"Long")));
         for(EntityClass entity:entities)
         {
             String entityData=entityGenerator.generate(entity,basePackage,entityPackage);
