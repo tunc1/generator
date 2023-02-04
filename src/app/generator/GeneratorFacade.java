@@ -23,10 +23,8 @@ public class GeneratorFacade
         serviceTestGenerator=new ServiceTestGenerator();
         writeToFile=new WriteToFile();
     }
-    public void generate(String projectPath,String basePackage,String entityPackage,List<String> entityNames) throws IOException
+    private void createFolders(String javaPath,String testPath,String entityPath)
     {
-        String javaPath=projectPath+"\\src\\main\\java\\"+basePackage.replace(".","\\");
-        String testPath=projectPath+"\\src\\test\\java\\"+basePackage.replace(".","\\");
         File repositoryFolder=new File(javaPath+"\\repository");
         if(!repositoryFolder.exists())
             repositoryFolder.mkdir();
@@ -37,6 +35,9 @@ public class GeneratorFacade
         if(!controllerFolder.exists())
             controllerFolder.mkdir();
         File controllerTestFolder=new File(testPath+"\\controller");
+        File entityFolder=new File(javaPath+"\\"+entityPath);
+        if(!entityFolder.exists())
+            entityFolder.mkdir();
         if(!controllerTestFolder.exists())
         {
             controllerTestFolder.getParentFile().mkdirs();
@@ -45,10 +46,13 @@ public class GeneratorFacade
         File serviceTestFolder=new File(testPath+"\\service");
         if(!serviceTestFolder.exists())
             serviceTestFolder.mkdir();
+    }
+    public void generate(String projectPath,String basePackage,String entityPackage,List<String> entityNames) throws IOException
+    {
         String entityPath=entityPackage.replace(".","\\");
-        File entityFolder=new File(javaPath+"\\"+entityPath);
-        if(!entityFolder.exists())
-            entityFolder.mkdir();
+        String javaPath=projectPath+"\\src\\main\\java\\"+basePackage.replace(".","\\");
+        String testPath=projectPath+"\\src\\test\\java\\"+basePackage.replace(".","\\");
+        createFolders(javaPath,testPath,entityPath);
         List<EntityClass> entities=new LinkedList<>();
         entityNames.forEach(entityName -> entities.add(new EntityClass(entityName,"Long")));
         for(EntityClass entity:entities)
