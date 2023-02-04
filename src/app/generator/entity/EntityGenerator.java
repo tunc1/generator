@@ -18,6 +18,14 @@ public class EntityGenerator extends ClassGenerator
                 "    @SequenceGenerator(name=\""+entityNameUpperCase+"_SEQUENCE_GENERATOR\",sequenceName=\""+entityNameUpperCase+"_SEQUENCE\",allocationSize=1)\n"+
                 "    @GeneratedValue(strategy=GenerationType.SEQUENCE,generator=\""+entityNameUpperCase+"_SEQUENCE_GENERATOR\")\n"+
                 "    private Long id;\n"+
+                "    public Long getId()\n"+
+                "    {\n"+
+                "        return id;\n"+
+                "    }\n"+
+                "    public void setId(Long id)\n"+
+                "    {\n"+
+                "        this.id=id;\n"+
+                "    }\n"+
                 "}";
     }
 }
