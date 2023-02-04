@@ -2,6 +2,7 @@ package app.generator;
 
 import app.dto.EntityClass;
 import app.generator.entity.*;
+import app.generator.exception.*;
 import app.util.WriteToFile;
 
 import java.io.File;
@@ -12,6 +13,7 @@ import java.util.List;
 public class GeneratorFacade
 {
     private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator,serviceTestGenerator,entityGenerator;
+    private final ExceptionClassGenerator globalExceptionHandlerGenerator,exceptionResponseGenerator;
     private final WriteToFile writeToFile;
     public GeneratorFacade()
     {
@@ -21,6 +23,8 @@ public class GeneratorFacade
         controllerGenerator=new ControllerGenerator();
         controllerTestGenerator=new ControllerTestGenerator();
         serviceTestGenerator=new ServiceTestGenerator();
+        globalExceptionHandlerGenerator=new GlobalExceptionHandlerGenerator();
+        exceptionResponseGenerator=new ExceptionResponseGenerator();
         writeToFile=new WriteToFile();
     }
     private void createFolders(String javaPath,String testPath,String entityPath)
@@ -34,10 +38,16 @@ public class GeneratorFacade
         File controllerFolder=new File(javaPath+"\\controller");
         if(!controllerFolder.exists())
             controllerFolder.mkdir();
-        File controllerTestFolder=new File(testPath+"\\controller");
+        File exceptionFolder=new File(javaPath+"\\exception");
+        if(!exceptionFolder.exists())
+            exceptionFolder.mkdir();
         File entityFolder=new File(javaPath+"\\"+entityPath);
         if(!entityFolder.exists())
+        {
+            entityFolder.getParentFile().mkdirs();
             entityFolder.mkdir();
+        }
+        File controllerTestFolder=new File(testPath+"\\controller");
         if(!controllerTestFolder.exists())
         {
             controllerTestFolder.getParentFile().mkdirs();
@@ -70,5 +80,9 @@ public class GeneratorFacade
             String serviceTest=serviceTestGenerator.generate(entity,basePackage,entityPackage);
             writeToFile.write(testPath+"\\service\\"+entity.className()+"ServiceTest.java",serviceTest);
         }
+        String globalExceptionHandler=globalExceptionHandlerGenerator.generate(basePackage);
+        writeToFile.write(javaPath+"\\exception\\GlobalExceptionHandler.java",globalExceptionHandler);
+        String exceptionResponse=exceptionResponseGenerator.generate(basePackage);
+        writeToFile.write(javaPath+"\\exception\\ExceptionResponse.java",exceptionResponse);
     }
 }
