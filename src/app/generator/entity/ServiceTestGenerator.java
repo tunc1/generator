@@ -25,7 +25,7 @@ public class ServiceTestGenerator extends ClassGenerator
                 "import org.springframework.data.domain.PageRequest;\n"+
                 "import org.springframework.data.domain.Pageable;\n"+
                 "\n"+
-                "import javax.persistence.EntityNotFoundException;\n"+
+                "import jakarta.persistence.EntityNotFoundException;\n"+
                 "import java.util.List;\n"+
                 "import java.util.Optional;\n"+
                 "\n"+

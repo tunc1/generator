@@ -9,7 +9,7 @@ public class EntityGenerator extends ClassGenerator
         String entityNameUpperCase=entity.className().toUpperCase();
         return "package "+basePackage+"."+entityPackage+";\n"+
                 "\n"+
-                "import javax.persistence.*;\n"+
+                "import jakarta.persistence.*;\n"+
                 "\n"+
                 "@Entity\n"+
                 "public class "+entity.className()+"\n"+

@@ -14,7 +14,7 @@ public class ServiceGenerator extends ClassGenerator
                 +"import org.springframework.stereotype.Service;\n"
                 +"import "+basePackage+"."+entityPackage+"."+entity+";\n"
                 +"import "+basePackage+".repository."+entity+"Repository;\n"
-                +"import javax.persistence.EntityNotFoundException;\n"
+                +"import jakarta.persistence.EntityNotFoundException;\n"
                 +"\n"
                 +"@Service\n"
                 +"public class "+entity+"Service\n"
