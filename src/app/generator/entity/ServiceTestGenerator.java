@@ -32,59 +32,64 @@ public class ServiceTestGenerator extends ClassGenerator
                 "@ExtendWith(MockitoExtension.class)\n"+
                 "class "+entity+"ServiceTest\n"+
                 "{\n"+
-                "    @Mock\n"+
-                "    "+entity+"Repository "+entityNameLowerCase+"Repository;\n"+
-                "    "+entity+"Service "+entityNameLowerCase+"Service;\n"+
+                "\t@Mock\n"+
+                "\t"+entity+"Repository "+entityNameLowerCase+"Repository;\n"+
+                "\t"+entity+"Service "+entityNameLowerCase+"Service;\n"+
                 "\n"+
-                "    @BeforeEach\n"+
-                "    void setUp()\n"+
-                "    {\n"+
-                "        "+entityNameLowerCase+"Service=new "+entity+"Service("+entityNameLowerCase+"Repository);\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void save()\n"+
-                "    {\n"+
-                "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
-                "        Mockito.when("+entityNameLowerCase+"Repository.save(Mockito.any())).thenAnswer(e->e.getArgument(0,"+entity+".class));\n"+
-                "        "+entity+" saved="+entityNameLowerCase+"Service.save("+entityNameLowerCase+");\n"+
-                "        Assertions.assertEquals("+entityNameLowerCase+",saved);\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void update()\n"+
-                "    {\n"+
-                "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
-                "        Mockito.when("+entityNameLowerCase+"Repository.save(Mockito.any())).thenAnswer(e->e.getArgument(0,"+entity+".class));\n"+
-                "        "+entity+" updated="+entityNameLowerCase+"Service.update("+entityNameLowerCase+");\n"+
-                "        Assertions.assertEquals("+entityNameLowerCase+",updated);\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void deleteById()\n"+
-                "    {\n"+
-                "        "+entityNameLowerCase+"Service.deleteById("+defaultId+");\n"+
-                "        Mockito.verify("+entityNameLowerCase+"Repository).deleteById(Mockito.any());\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void findById_returns"+entity+"()\n"+
-                "    {\n"+
-                "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
-                "        Mockito.when("+entityNameLowerCase+"Repository.findById(Mockito.any())).thenReturn(Optional.of("+entityNameLowerCase+"));\n"+
-                "        "+entity+" actual="+entityNameLowerCase+"Service.findById("+defaultId+");\n"+
-                "        Assertions.assertEquals("+entityNameLowerCase+",actual);\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void findById_throwsEntityNotFoundException()\n"+
-                "    {\n"+
-                "        Mockito.when("+entityNameLowerCase+"Repository.findById(Mockito.any())).thenReturn(Optional.empty());\n"+
-                "        Assertions.assertThrows(EntityNotFoundException.class,()->"+entityNameLowerCase+"Service.findById("+defaultId+"));\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void findAll()\n"+
-                "    {\n"+
-                "        Page<"+entity+"> page=new PageImpl<>(List.of(new "+entity+"()));\n"+
-                "        Mockito.when("+entityNameLowerCase+"Repository.findAll(Mockito.any(Pageable.class))).thenReturn(page);\n"+
-                "        Page<"+entity+"> actual="+entityNameLowerCase+"Service.findAll(PageRequest.of(0,20));\n"+
-                "        Assertions.assertEquals(page,actual);\n"+
-                "    }\n"+
+                "\t@BeforeEach\n"+
+                "\tvoid setUp()\n"+
+                "\t{\n"+
+                "\t\t"+entityNameLowerCase+"Service=new "+entity+"Service("+entityNameLowerCase+"Repository);\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid save()\n"+
+                "\t{\n"+
+                "\t\t"+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
+                "\t\t"+entityClass.idType()+" id="+defaultId+";\n"+
+                "\t\tMockito.when("+entityNameLowerCase+"Repository.save(Mockito.any())).thenAnswer(e->\n" +
+                "\t\t{\n" +
+                "\t\t\t"+entity+" entity=new "+entity+"();\n" +
+                "\t\t\tentity.setId(id);\n" +
+                "\t\t\treturn entity;\n" +
+                "\t\t});\n"+
+                "\t\t"+entityClass.idType()+" savedId="+entityNameLowerCase+"Service.save("+entityNameLowerCase+");\n"+
+                "\t\tAssertions.assertEquals(id,savedId);\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid update()\n"+
+                "\t{\n"+
+                "\t\t"+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
+                "\t\t"+entityNameLowerCase+"Service.update("+entityNameLowerCase+");\n"+
+                "\t\tMockito.verify("+entityNameLowerCase+"Repository).save("+entityNameLowerCase+");\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid deleteById()\n"+
+                "\t{\n"+
+                "\t\t"+entityNameLowerCase+"Service.deleteById("+defaultId+");\n"+
+                "\t\tMockito.verify("+entityNameLowerCase+"Repository).deleteById(Mockito.any());\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid findById_returns"+entity+"()\n"+
+                "\t{\n"+
+                "\t\t"+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
+                "\t\tMockito.when("+entityNameLowerCase+"Repository.findById(Mockito.any())).thenReturn(Optional.of("+entityNameLowerCase+"));\n"+
+                "\t\t"+entity+" actual="+entityNameLowerCase+"Service.findById("+defaultId+");\n"+
+                "\t\tAssertions.assertEquals("+entityNameLowerCase+",actual);\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid findById_throwsEntityNotFoundException()\n"+
+                "\t{\n"+
+                "\t\tMockito.when("+entityNameLowerCase+"Repository.findById(Mockito.any())).thenReturn(Optional.empty());\n"+
+                "\t\tAssertions.assertThrows(EntityNotFoundException.class,()->"+entityNameLowerCase+"Service.findById("+defaultId+"));\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid findAll()\n"+
+                "\t{\n"+
+                "\t\tPage<"+entity+"> page=new PageImpl<>(List.of(new "+entity+"()));\n"+
+                "\t\tMockito.when("+entityNameLowerCase+"Repository.findAll(Mockito.any(Pageable.class))).thenReturn(page);\n"+
+                "\t\tPage<"+entity+"> actual="+entityNameLowerCase+"Service.findAll(PageRequest.of(0,20));\n"+
+                "\t\tAssertions.assertEquals(page,actual);\n"+
+                "\t}\n"+
                 "}";
     }
 }

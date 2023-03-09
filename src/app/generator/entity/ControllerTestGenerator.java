@@ -13,6 +13,8 @@ public class ControllerTestGenerator extends ClassGenerator
                 "\n"+
                 "import "+basePackage+"."+entityPackage+"."+entity+";\n"+
                 "import "+basePackage+".service."+entity+"Service;\n"+
+                "import "+basePackage+".controller.request."+entity+"SaveRequest;\n"+
+                "import "+basePackage+".controller.response."+entity+"SaveResponse;\n"+
                 "import org.junit.jupiter.api.Assertions;\n"+
                 "import org.junit.jupiter.api.BeforeEach;\n"+
                 "import org.junit.jupiter.api.Test;\n"+
@@ -20,6 +22,7 @@ public class ControllerTestGenerator extends ClassGenerator
                 "import org.springframework.data.domain.PageImpl;\n"+
                 "import org.springframework.data.domain.PageRequest;\n"+
                 "import org.junit.jupiter.api.extension.ExtendWith;\n"+
+                "import com.fasterxml.jackson.databind.ObjectMapper;\n"+
                 "import org.mockito.Mock;\n"+
                 "import org.mockito.Mockito;\n"+
                 "import org.mockito.junit.jupiter.MockitoExtension;\n"+
@@ -29,55 +32,62 @@ public class ControllerTestGenerator extends ClassGenerator
                 "@ExtendWith(MockitoExtension.class)\n"+
                 "class "+entity+"ControllerTest\n"+
                 "{\n"+
-                "    @Mock\n"+
-                "    "+entity+"Service "+entityNameLowerCase+"Service;\n"+
-                "    "+entity+"Controller "+entityNameLowerCase+"Controller;\n"+
+                "\t@Mock\n"+
+                "\t"+entity+"Service "+entityNameLowerCase+"Service;\n"+
+                "\t@Mock\n"+
+                "\tObjectMapper objectMapper;\n"+
+                "\t"+entity+"Controller "+entityNameLowerCase+"Controller;\n"+
                 "\n"+
-                "    @BeforeEach\n"+
-                "    void setUp()\n"+
-                "    {\n"+
-                "        "+entityNameLowerCase+"Controller=new "+entity+"Controller("+entityNameLowerCase+"Service);\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void save()\n"+
-                "    {\n"+
-                "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
-                "        Mockito.when("+entityNameLowerCase+"Service.save(Mockito.any())).thenAnswer(e->e.getArgument(0,"+entity+".class));\n"+
-                "        "+entity+" saved="+entityNameLowerCase+"Controller.save("+entityNameLowerCase+");\n"+
-                "        Assertions.assertEquals("+entityNameLowerCase+",saved);\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void update()\n"+
-                "    {\n"+
-                "        "+entityClass.idType()+" id="+defaultId+";\n"+
-                "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
-                "        Mockito.when("+entityNameLowerCase+"Service.update(Mockito.any())).thenAnswer(e->e.getArgument(0,"+entity+".class));\n"+
-                "        "+entity+" updated="+entityNameLowerCase+"Controller.update("+entityNameLowerCase+",id);\n"+
-                "        Assertions.assertEquals("+entityNameLowerCase+",updated);\n"+
-                "        Assertions.assertEquals(id,updated.getId());\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void deleteById()\n"+
-                "    {\n"+
-                "        "+entityNameLowerCase+"Controller.deleteById("+defaultId+");\n"+
-                "        Mockito.verify("+entityNameLowerCase+"Service).deleteById(Mockito.any());\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void findById_returns"+entity+"()\n"+
-                "    {\n"+
-                "        "+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
-                "        Mockito.when("+entityNameLowerCase+"Service.findById(Mockito.any())).thenReturn("+entityNameLowerCase+");\n"+
-                "        "+entity+" actual="+entityNameLowerCase+"Controller.findById("+defaultId+");\n"+
-                "        Assertions.assertEquals("+entityNameLowerCase+",actual);\n"+
-                "    }\n"+
-                "    @Test\n"+
-                "    void findAll()\n"+
-                "    {\n"+
-                "        Page<"+entity+"> page=new PageImpl<>(List.of(new "+entity+"()));\n"+
-                "        Mockito.when("+entityNameLowerCase+"Service.findAll(Mockito.any())).thenReturn(page);\n"+
-                "        Page<"+entity+"> actual="+entityNameLowerCase+"Controller.findAll(PageRequest.of(0,20));\n"+
-                "        Assertions.assertEquals(page,actual);\n"+
-                "    }\n"+
+                "\t@BeforeEach\n"+
+                "\tvoid setUp()\n"+
+                "\t{\n"+
+                "\t\t"+entityNameLowerCase+"Controller=new "+entity+"Controller("+entityNameLowerCase+"Service,objectMapper);\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid save()\n"+
+                "\t{\n"+
+                "\t\t"+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
+                "\t\t"+entityClass.idType()+" id="+defaultId+";\n"+
+                "\t\t"+entityNameLowerCase+".setId(id);\n"+
+                "\t\tMockito.when("+entityNameLowerCase+"Service.save(Mockito.any())).thenReturn(id);\n"+
+                "\t\tMockito.when(objectMapper.convertValue(Mockito.any(),Mockito.eq("+entity+".class))).thenReturn("+entityNameLowerCase+");\n"+
+                "\t\t"+entity+"SaveRequest request=new "+entity+"SaveRequest();\n"+
+                "\t\t"+entity+"SaveResponse response="+entityNameLowerCase+"Controller.save(request);\n"+
+                "\t\tAssertions.assertEquals("+entityNameLowerCase+".getId(),response.getId());\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid update()\n"+
+                "\t{\n"+
+                "\t\t"+entityClass.idType()+" id="+defaultId+";\n"+
+                "\t\t"+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
+                "\t\t"+entity+"SaveRequest request=new "+entity+"SaveRequest();\n"+
+                "\t\tMockito.when(objectMapper.convertValue(Mockito.any(),Mockito.eq("+entity+".class))).thenReturn("+entityNameLowerCase+");\n"+
+                "\t\t"+entityNameLowerCase+"Controller.update(request,id);\n"+
+                "\t\tAssertions.assertEquals(id,"+entityNameLowerCase+".getId());\n"+
+                "\t\tMockito.verify("+entityNameLowerCase+"Service).update(Mockito.any());\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid deleteById()\n"+
+                "\t{\n"+
+                "\t\t"+entityNameLowerCase+"Controller.deleteById("+defaultId+");\n"+
+                "\t\tMockito.verify("+entityNameLowerCase+"Service).deleteById(Mockito.any());\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid findById()\n"+
+                "\t{\n"+
+                "\t\t"+entity+" "+entityNameLowerCase+"=new "+entity+"();\n"+
+                "\t\tMockito.when("+entityNameLowerCase+"Service.findById(Mockito.any())).thenReturn("+entityNameLowerCase+");\n"+
+                "\t\t"+entity+" actual="+entityNameLowerCase+"Controller.findById("+defaultId+");\n"+
+                "\t\tAssertions.assertEquals("+entityNameLowerCase+",actual);\n"+
+                "\t}\n"+
+                "\t@Test\n"+
+                "\tvoid findAll()\n"+
+                "\t{\n"+
+                "\t\tPage<"+entity+"> page=new PageImpl<>(List.of(new "+entity+"()));\n"+
+                "\t\tMockito.when("+entityNameLowerCase+"Service.findAll(Mockito.any())).thenReturn(page);\n"+
+                "\t\tPage<"+entity+"> actual="+entityNameLowerCase+"Controller.findAll(PageRequest.of(0,20));\n"+
+                "\t\tAssertions.assertEquals(page,actual);\n"+
+                "\t}\n"+
                 "}";
     }
 }

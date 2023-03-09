@@ -13,6 +13,7 @@ import java.util.List;
 public class GeneratorFacade
 {
     private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator,serviceTestGenerator,entityGenerator;
+    private final ClassGenerator saveRequestGenerator,saveResponseGenerator;
     private final ExceptionClassGenerator globalExceptionHandlerGenerator,exceptionResponseGenerator;
     private final WriteToFile writeToFile;
     public GeneratorFacade()
@@ -25,6 +26,8 @@ public class GeneratorFacade
         serviceTestGenerator=new ServiceTestGenerator();
         globalExceptionHandlerGenerator=new GlobalExceptionHandlerGenerator();
         exceptionResponseGenerator=new ExceptionResponseGenerator();
+        saveRequestGenerator=new SaveRequestGenerator();
+        saveResponseGenerator=new SaveResponseGenerator();
         writeToFile=new WriteToFile();
     }
     private void createFolders(String javaPath,String testPath,String entityPath)
@@ -38,6 +41,12 @@ public class GeneratorFacade
         File controllerFolder=new File(javaPath+"\\controller");
         if(!controllerFolder.exists())
             controllerFolder.mkdir();
+        File requestFolder=new File(javaPath+"\\controller\\request");
+        if(!requestFolder.exists())
+            requestFolder.mkdir();
+        File responseFolder=new File(javaPath+"\\controller\\response");
+        if(!responseFolder.exists())
+            responseFolder.mkdir();
         File exceptionFolder=new File(javaPath+"\\exception");
         if(!exceptionFolder.exists())
             exceptionFolder.mkdir();
@@ -75,6 +84,10 @@ public class GeneratorFacade
             writeToFile.write(javaPath+"\\service\\"+entity.className()+"Service.java",service);
             String controller=controllerGenerator.generate(entity,basePackage,entityPackage);
             writeToFile.write(javaPath+"\\controller\\"+entity.className()+"Controller.java",controller);
+            String saveRequest=saveRequestGenerator.generate(entity,basePackage,entityPackage);
+            writeToFile.write(javaPath+"\\controller\\request\\"+entity.className()+"SaveRequest.java",saveRequest);
+            String saveResponse=saveResponseGenerator.generate(entity,basePackage,entityPackage);
+            writeToFile.write(javaPath+"\\controller\\response\\"+entity.className()+"SaveResponse.java",saveResponse);
             String controllerTest=controllerTestGenerator.generate(entity,basePackage,entityPackage);
             writeToFile.write(testPath+"\\controller\\"+entity.className()+"ControllerTest.java",controllerTest);
             String serviceTest=serviceTestGenerator.generate(entity,basePackage,entityPackage);
