@@ -13,7 +13,7 @@ import java.util.List;
 public class GeneratorFacade
 {
     private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator,serviceTestGenerator,entityGenerator;
-    private final ClassGenerator saveRequestGenerator,saveResponseGenerator;
+    private final ClassGenerator saveRequestGenerator,updateRequestGenerator,saveResponseGenerator;
     private final ExceptionClassGenerator globalExceptionHandlerGenerator,exceptionResponseGenerator;
     private final WriteToFile writeToFile;
     public GeneratorFacade()
@@ -27,6 +27,7 @@ public class GeneratorFacade
         globalExceptionHandlerGenerator=new GlobalExceptionHandlerGenerator();
         exceptionResponseGenerator=new ExceptionResponseGenerator();
         saveRequestGenerator=new SaveRequestGenerator();
+        updateRequestGenerator=new UpdateRequestGenerator();
         saveResponseGenerator=new SaveResponseGenerator();
         writeToFile=new WriteToFile();
     }
@@ -86,6 +87,8 @@ public class GeneratorFacade
             writeToFile.write(javaPath+"\\controller\\"+entity.className()+"Controller.java",controller);
             String saveRequest=saveRequestGenerator.generate(entity,basePackage,entityPackage);
             writeToFile.write(javaPath+"\\controller\\request\\"+entity.className()+"SaveRequest.java",saveRequest);
+			String updateRequest=updateRequestGenerator.generate(entity,basePackage,entityPackage);
+            writeToFile.write(javaPath+"\\controller\\request\\"+entity.className()+"UpdateRequest.java",updateRequest);
             String saveResponse=saveResponseGenerator.generate(entity,basePackage,entityPackage);
             writeToFile.write(javaPath+"\\controller\\response\\"+entity.className()+"SaveResponse.java",saveResponse);
             String controllerTest=controllerTestGenerator.generate(entity,basePackage,entityPackage);
