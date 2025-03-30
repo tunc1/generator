@@ -81,30 +81,28 @@ public class GeneratorFacade
         entityNames.forEach(entityName -> entities.add(new EntityClass(entityName,"Long")));
         for(EntityClass entity:entities)
         {
-            String entityData=entityGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\"+entityPath+"\\"+entity.className()+".java",entityData);
-            String dto=dtoGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\dto\\"+entity.className()+"DTO.java",dto);
-			String repository=repositoryGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\repository\\"+entity.className()+"Repository.java",repository);
-            String service=serviceGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\service\\"+entity.className()+"Service.java",service);
-            String controller=controllerGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\controller\\"+entity.className()+"Controller.java",controller);
-            String saveRequest=saveRequestGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\controller\\request\\"+entity.className()+"SaveRequest.java",saveRequest);
-			String updateRequest=updateRequestGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\controller\\request\\"+entity.className()+"UpdateRequest.java",updateRequest);
-            String saveResponse=saveResponseGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(javaPath+"\\controller\\response\\"+entity.className()+"SaveResponse.java",saveResponse);
-            String controllerTest=controllerTestGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(testPath+"\\controller\\"+entity.className()+"ControllerTest.java",controllerTest);
-            String serviceTest=serviceTestGenerator.generate(entity,basePackage,entityPackage);
-            writeToFile.write(testPath+"\\service\\"+entity.className()+"ServiceTest.java",serviceTest);
+			writeToFile(entityGenerator.generate(entity,basePackage,entityPackage),javaPath+"\\"+entityPath+"\\"+entity.className()+".java");
+			writeToFile(dtoGenerator.generate(entity,basePackage,entityPackage),javaPath+"\\dto\\"+entity.className()+"DTO.java");
+			writeToFile(repositoryGenerator.generate(entity,basePackage,entityPackage),javaPath+"\\repository\\"+entity.className()+"Repository.java");
+			writeToFile(serviceGenerator.generate(entity,basePackage,entityPackage),javaPath+"\\service\\"+entity.className()+"Service.java");
+			writeToFile(controllerGenerator.generate(entity,basePackage,entityPackage),javaPath+"\\controller\\"+entity.className()+"Controller.java");
+			writeToFile(saveRequestGenerator.generate(entity,basePackage,entityPackage),javaPath+"\\controller\\request\\"+entity.className()+"SaveRequest.java");
+			writeToFile(updateRequestGenerator.generate(entity,basePackage,entityPackage),javaPath+"\\controller\\request\\"+entity.className()+"UpdateRequest.java");
+			writeToFile(saveResponseGenerator.generate(entity,basePackage,entityPackage),javaPath+"\\controller\\response\\"+entity.className()+"SaveResponse.java");
+			
+			writeToFile(controllerTestGenerator.generate(entity,basePackage,entityPackage),testPath+"\\controller\\"+entity.className()+"ControllerTest.java");
+			writeToFile(serviceTestGenerator.generate(entity,basePackage,entityPackage),testPath+"\\service\\"+entity.className()+"ServiceTest.java");
         }
-        String globalExceptionHandler=globalExceptionHandlerGenerator.generate(basePackage);
-        writeToFile.write(javaPath+"\\exception\\GlobalExceptionHandler.java",globalExceptionHandler);
-        String exceptionResponse=exceptionResponseGenerator.generate(basePackage);
-        writeToFile.write(javaPath+"\\exception\\ExceptionResponse.java",exceptionResponse);
+		writeToFile(globalExceptionHandlerGenerator.generate(basePackage),javaPath+"\\exception\\GlobalExceptionHandler.java");
+		writeToFile(exceptionResponseGenerator.generate(basePackage),javaPath+"\\exception\\ExceptionResponse.java");
     }
+	private void writeToFile(String data,String filePath) throws IOException
+	{
+		File file=new File(filePath);
+		if(!file.exists())
+		{
+			file.createNewFile();
+			writeToFile.write(file,data);
+		}
+	}
 }

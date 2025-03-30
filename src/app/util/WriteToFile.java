@@ -6,13 +6,10 @@ import java.io.IOException;
 
 public class WriteToFile
 {
-    public void write(String filePath,String data) throws IOException
+    public void write(File file,String data) throws IOException
     {
-        File file=new File(filePath);
-        if(!file.exists())
-            file.createNewFile();
-        FileOutputStream fileOutputStream=new FileOutputStream(file);
-        fileOutputStream.write(data.getBytes());
-        fileOutputStream.close();
+		FileOutputStream fileOutputStream=new FileOutputStream(file);
+		fileOutputStream.write(data.getBytes());
+		fileOutputStream.close();
     }
 }
