@@ -12,13 +12,14 @@ import java.util.List;
 
 public class GeneratorFacade
 {
-    private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator,serviceTestGenerator,entityGenerator;
+    private final ClassGenerator repositoryGenerator,serviceGenerator,controllerGenerator,controllerTestGenerator,serviceTestGenerator,entityGenerator,dtoGenerator;
     private final ClassGenerator saveRequestGenerator,updateRequestGenerator,saveResponseGenerator;
     private final ExceptionClassGenerator globalExceptionHandlerGenerator,exceptionResponseGenerator;
     private final WriteToFile writeToFile;
     public GeneratorFacade()
     {
         entityGenerator=new EntityGenerator();
+        dtoGenerator=new DTOGenerator();
         repositoryGenerator=new RepositoryGenerator();
         serviceGenerator=new ServiceGenerator();
         controllerGenerator=new ControllerGenerator();
@@ -51,6 +52,9 @@ public class GeneratorFacade
         File exceptionFolder=new File(javaPath+"\\exception");
         if(!exceptionFolder.exists())
             exceptionFolder.mkdir();
+		File dtoFolder=new File(javaPath+"\\dto");
+        if(!dtoFolder.exists())
+            dtoFolder.mkdir();
         File entityFolder=new File(javaPath+"\\"+entityPath);
         if(!entityFolder.exists())
         {
@@ -79,7 +83,9 @@ public class GeneratorFacade
         {
             String entityData=entityGenerator.generate(entity,basePackage,entityPackage);
             writeToFile.write(javaPath+"\\"+entityPath+"\\"+entity.className()+".java",entityData);
-            String repository=repositoryGenerator.generate(entity,basePackage,entityPackage);
+            String dto=dtoGenerator.generate(entity,basePackage,entityPackage);
+            writeToFile.write(javaPath+"\\dto\\"+entity.className()+"DTO.java",dto);
+			String repository=repositoryGenerator.generate(entity,basePackage,entityPackage);
             writeToFile.write(javaPath+"\\repository\\"+entity.className()+"Repository.java",repository);
             String service=serviceGenerator.generate(entity,basePackage,entityPackage);
             writeToFile.write(javaPath+"\\service\\"+entity.className()+"Service.java",service);
