@@ -17,7 +17,6 @@ public class ControllerGenerator extends ClassGenerator
                 +"import "+basePackage+".controller.response."+entity+"SaveResponse;\n"
                 +"import org.springframework.web.bind.annotation.*;\n"
                 +"import org.springframework.data.domain.Pageable;\n"
-                +"import org.springframework.data.domain.Page;\n"
                 +"import org.springframework.data.web.PagedModel;\n"
                 +"\n"+"import org.springframework.http.HttpStatus;\n"
                 +"\n"
